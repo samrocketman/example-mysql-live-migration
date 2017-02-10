@@ -6,7 +6,8 @@ machine to another remote machine.
 
 Prerequisites:
 
-* 16GB of system memory.
+* At least 4 CPU cores.
+* At least 16GB of system memory.
 * Running on a computer which has `bash`, `mysql`, and `mysqldump` commands
   available (essentially bash and MySQL client only).
 * [Vagrant][vagrant] for provisioning example database servers.  Vagrant depends
@@ -48,8 +49,7 @@ Destination database server vars:
 * `DST_DB_PASSWORD` - password of database user (default: `syncpw`)
 
 > **WARNING:** `SRC_DB_PORT` and `DST_DB_PORT` are not default to 3306 which is
-> the typical MySQL port.  Be aware of this.  Don't use any example passwords in
-> this repository to create accounts on active database servers.
+> the typical MySQL port.  Be aware of this.
 
 # Run the example migration
 
@@ -93,6 +93,24 @@ Alternatively, connect to the destination database remotely using a local
 
     mysql -h 127.0.0.1 -P 3334 -u datasync -psyncpw
 
+# Notes
+
+* In the [`Vagrantfile`](Vagrantfile), the `datasync` user is allowed to
+  authenticate from any remote machine.  This is not a recommended practice.
+  Instead, limit the `datasync` user to authenticate only from known networks or
+  computers in an active database environment.
+* Don't use any example passwords in this repository to create accounts on
+  active database servers.
+* To improve performance of the destination database import, `/etc/my.cnf` can
+  be edited to increase [`innodb_write_io_threads=64`][innodb_write_io] of the
+  destination database server.
+* If you encounter `mysql` timeouts because the data being exported is too large
+  in a single statement, then add `--skip-extended-insert` to the `mysqldump`
+  command.  Without the option migration time increases from 30 seconds to about
+  20 minutes.  However, it is much more reliable.  I've encountered this need in
+  databases for document management systems.
+
 [test_db]: https://github.com/datacharmer/test_db
 [vagrant]: https://www.vagrantup.com/
 [vbox]: https://www.virtualbox.org/
+[innodb_write_io]: https://dev.mysql.com/doc/refman/5.5/en/innodb-parameters.html#sysvar_innodb_write_io_threads

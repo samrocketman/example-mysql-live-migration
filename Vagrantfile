@@ -15,6 +15,7 @@ Vagrant.configure("2") do |config|
     src_db.vm.box = "centos/7"
     src_db.vm.network "forwarded_port", guest: 3306, host: 3333
     src_db.vm.provider "virtualbox" do |vb|
+      vb.cpus = "4"
       vb.memory = "4096"
     end
     src_db.vm.provision "shell", inline: <<-SHELL
@@ -41,6 +42,7 @@ EOF
     dst_db.vm.box = "centos/7"
     dst_db.vm.network "forwarded_port", guest: 3306, host: 3334
     dst_db.vm.provider "virtualbox" do |vb|
+      vb.cpus = "4"
       vb.memory = "4096"
     end
     dst_db.vm.provision "shell", inline: <<-SHELL

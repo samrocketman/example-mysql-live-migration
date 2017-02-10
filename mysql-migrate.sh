@@ -63,10 +63,11 @@ function dumpSourceDB() {
   mysqldump \
     -h "${SRC_DB_HOST}" -P "${SRC_DB_PORT}" \
     -u "${SRC_DB_USER}" "-p${SRC_DB_PASSWORD}" \
-    --single-transaction \
-    --skip-extended-insert \
     --create-options \
-    --databases "${SRC_DB_DATABASE}"
+    --single-transaction \
+    --databases "${SRC_DB_DATABASE}" | sed 's#/\*![0-9]\+ DEFINER=[^*]\+\*/##'
+    #see also https://dev.mysql.com/doc/refman/5.7/en/mysqlpump.html#option_mysqlpump_skip-definer
+    #used sed command instead of --skip-definer for compatibility
 }
 
 function importToDestinationDB() {
