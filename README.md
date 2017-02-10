@@ -6,9 +6,11 @@ machine to another remote machine.
 
 Prerequisites:
 
+* 16GB of system memory.
 * Running on a computer which has `bash`, `mysql`, and `mysqldump` commands
   available (essentially bash and MySQL client only).
-* [Vagrant][vagrant] for provisioning dummy databases which serve as example.
+* [Vagrant][vagrant] for provisioning example database servers.  Vagrant depends
+  on [VirtualBox][vbox].
 
 This example uses dummy MySQL data from [`datacharmer/test_db`][test_db].
 
@@ -19,9 +21,9 @@ The overview of a live MySQL migration process is:
 1. On the source and destination database servers create a `datasync` database
    user which is capable of authenticating remotely with the database.  The user
    also needs all privileges granted on the database to be migrated.
-2. Set `mysql-migrate.sh` environment variables for both the source and
-   destination database servers.  This is required to properly connect and
-   authenticate with the source and destination database servers.
+2. Set [`mysql-migrate.sh`](mysql-migrate.sh) environment variables for both the
+   source and destination database servers.  This is required to properly
+   connect and authenticate with the source and destination database servers.
 3. Execute `mysql-migrate.sh`.
 
 # mysql-migrate.sh environment variables
@@ -93,3 +95,4 @@ Alternatively, connect to the destination database remotely using a local
 
 [test_db]: https://github.com/datacharmer/test_db
 [vagrant]: https://www.vagrantup.com/
+[vbox]: https://www.virtualbox.org/
