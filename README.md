@@ -65,7 +65,7 @@ running the example migration.
 
 Perform the migration.  Execute:
 
-    mysql-migrate.sh
+    bash mysql-migrate.sh
 
 The above command will dump from the source database and import the dump to the
 destination database.
